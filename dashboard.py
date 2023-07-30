@@ -41,7 +41,8 @@ def average_gross_rent():
     """Average Gross Rent in San Francisco Per Year."""
     rent_plot = sfo_data['gross_rent'].groupby('year').mean()
     fig = plt.figure()
-    rent_plot.plot(ylabel='Gross Rent', 
+    rent_plot.plot(ylabel='Gross Rent',
+                   xlabel='Year',
                    marker='o', 
                    title='Average Gross Rent by Year', 
                    color='red'
@@ -53,6 +54,7 @@ def average_sales_price():
     price_plot = sfo_data['sale_price_sqr_foot'].groupby('year').mean()
     fig = plt.figure()
     price_plot.plot(ylabel='Sale Price per SqFt',
+                    xlabel='Year',
                     marker='o', 
                     title='Average Sale Price per SqFt by Year'
                    )
@@ -91,6 +93,16 @@ def average_price_by_neighborhood():
                                   xlabel='Year', 
                                   y='sale_price_sqr_foot', 
                                   ylabel='Mean Sale Price per Sq Ft',
+                                  groupby='neighborhood'
+                                 )
+    return hv.render(fig)
+
+def average_rent_by_neighborhood():
+    sfo_grouped = sfo_data.groupby(['year', 'neighborhood']).mean().reset_index()
+    fig = sfo_grouped.hvplot.line(x='year', 
+                                  xlabel='Year',
+                                  y='gross_rent',
+                                  ylabel='Mean Gross Rent',
                                   groupby='neighborhood'
                                  )
     return hv.render(fig)
@@ -207,6 +219,7 @@ with st.sidebar:
                                 'Average Gross Rent and Sale Price (seperate)',
                                 "Average Gross Rent and Sale Price (together)",
                                 "Average Price by Neighborhood",
+                                "Average Rent by Neighborhood",
                                 "Top 10 Expensive Neighborhoods",
                                 "Top Expensive Neighborhoods Rent and Sales",
                                 "Parallel Coordinates",
@@ -228,6 +241,8 @@ elif (plot_choice == "Average Gross Rent and Sale Price (together)"):
     st.pyplot(average_rent_and_price())
 elif (plot_choice == "Average Price by Neighborhood"):
     st.bokeh_chart(average_price_by_neighborhood())
+elif (plot_choice == "Average Rent by Neighborhood"):
+    st.bokeh_chart(average_rent_by_neighborhood())
 elif (plot_choice == "Top 10 Expensive Neighborhoods"):
     st.bokeh_chart(top_most_expensive_neighborhoods())
 elif (plot_choice == "Top Expensive Neighborhoods Rent and Sales"):
