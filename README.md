@@ -68,9 +68,6 @@ streamlit run dashboard.py
 ```
 from command line in a folder containing data from this repository.
 
-The plots of average price and rent per year were put in columns
+The plots of average price and rent per year were put in columns to show both at once.
 
-***
-
-## Conclusions
 
